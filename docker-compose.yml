@@ -1,0 +1,12 @@
+services:
+  zolan:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./data:/app/data
+    environment:
+      - ENCRYPTION_KEY=${ENCRYPTION_KEY}
+      - TAVILY_API_KEY=${TAVILY_API_KEY}
+      - ORIGIN=https://your-domain.example.com
+    restart: unless-stopped
