@@ -4,11 +4,11 @@
 	let { data, form } = $props();
 
 	let showPromptEditor = $state(false);
-	let promptValue = $state(data.systemPrompt ?? '');
+	let promptValue = $state('');
 	let newPlatformName = $state('');
 	let newPlatformDesc = $state('');
 
-	// Sync when server data changes (e.g. after form submission)
+	// Sync prompt text when server data changes (e.g. after form submission)
 	$effect(() => {
 		promptValue = data.systemPrompt ?? '';
 	});
