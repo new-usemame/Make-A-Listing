@@ -42,7 +42,7 @@ export async function imageToBase64(relativePath: string): Promise<string> {
 export async function extractPdfText(file: File): Promise<string> {
 	const buffer = Buffer.from(await file.arrayBuffer());
 	const { PDFParse } = await import('pdf-parse');
-	const parser = new PDFParse({});
-	await parser.load(buffer);
+	const parser = new PDFParse({ data: buffer });
+	await parser.load();
 	return await parser.getText();
 }
