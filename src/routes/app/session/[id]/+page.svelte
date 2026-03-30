@@ -20,6 +20,7 @@
 	let pdfFile = $state<File | null>(null);
 	let generating = $state(false);
 	let streamingListings = $state<Record<string, string>>({});
+	let completedListings = $state<Record<string, string>>({});
 	let pipelineStatus = $state('Thinking...');
 	let expandedCards = $state<Record<string, boolean>>({});
 	let expandedHistory = $state<Record<string, boolean>>({});
@@ -74,6 +75,7 @@
 		if (!prompt.trim() || selectedPlatforms.length === 0 || generating) return;
 		generating = true;
 		streamingListings = {};
+		completedListings = {};
 		pipelineStatus = 'Thinking...';
 
 		// Initialize streaming state for each selected platform
@@ -148,7 +150,9 @@
 				}
 			}
 
-			// Done streaming - reload to get persisted data
+			// Done streaming - keep results visible
+			completedListings = { ...streamingListings };
+			streamingListings = {};
 			prompt = '';
 			images = [];
 			pdfFile = null;
@@ -159,7 +163,6 @@
 			alert('An error occurred during generation.');
 		} finally {
 			generating = false;
-			streamingListings = {};
 		}
 	}
 </script>
@@ -324,6 +327,65 @@
 									{pipelineStatus}
 								</div>
 							{/if}
+						</div>
+					{/if}
+				</div>
+			{/each}
+		</section>
+	{/if}
+
+	<!-- Completed Listings (latest generation, stays visible until next generate) -->
+	{#if Object.keys(completedListings).length > 0}
+		<section class="space-y-3">
+			<h2 class="text-sm font-semibold text-gray-500 uppercase tracking-wide">
+				Latest Listings
+			</h2>
+			{#each Object.entries(completedListings) as [platformId, content] (platformId)}
+				<div class="bg-white rounded-xl shadow-sm border border-blue-200 overflow-hidden">
+					<button
+						type="button"
+						class="w-full px-4 py-3 flex items-center justify-between text-left hover:bg-gray-50"
+						onclick={() => (expandedCards[platformId] = !expandedCards[platformId])}
+					>
+						<span class="font-medium text-gray-900">{platformName(platformId)}</span>
+						<svg
+							class="w-5 h-5 text-gray-400 transition-transform {expandedCards[platformId]
+								? 'rotate-180'
+								: ''}"
+							fill="none"
+							stroke="currentColor"
+							viewBox="0 0 24 24"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M19 9l-7 7-7-7"
+							/>
+						</svg>
+					</button>
+
+					{#if expandedCards[platformId] !== false}
+						<div class="border-t border-gray-100 px-4 py-3">
+							<div class="prose prose-sm max-w-none">
+								{@html renderMarkdown(content)}
+							</div>
+							<div class="flex gap-2 mt-3 pt-3 border-t border-gray-100">
+								<button
+									type="button"
+									onclick={() => copyRawMd(content)}
+									class="text-xs px-2.5 py-1 rounded border border-gray-300 text-gray-600 hover:bg-gray-50"
+								>
+									Copy Raw MD
+								</button>
+								<button
+									type="button"
+									onclick={() => copyText(content)}
+									class="text-xs px-2.5 py-1 rounded border border-gray-300 text-gray-600 hover:bg-gray-50"
+								>
+									Copy Text
+								</button>
+							</div>
 						</div>
 					{/if}
 				</div>
