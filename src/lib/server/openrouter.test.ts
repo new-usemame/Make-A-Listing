@@ -13,7 +13,7 @@ describe('openrouter', () => {
 	});
 
 	it('CURATED_MODELS contains expected entries', () => {
-		expect(CURATED_MODELS.length).toBe(7);
+		expect(CURATED_MODELS.length).toBe(5);
 		const ids = CURATED_MODELS.map((m) => m.id);
 		expect(ids).toContain('openai/gpt-4o-mini');
 		expect(ids).toContain('anthropic/claude-sonnet-4.5');

@@ -16,13 +16,6 @@ export function buildOpenRouterClient(apiKey: string): OpenAI {
 export const CURATED_MODELS = [
 	{ id: 'openai/gpt-4o-mini', name: 'GPT-4o Mini', tier: 'budget', vision: true, tools: true },
 	{
-		id: 'openai/gpt-4.1-mini',
-		name: 'GPT-4.1 Mini',
-		tier: 'budget',
-		vision: true,
-		tools: true
-	},
-	{
 		id: 'google/gemini-2.5-flash',
 		name: 'Gemini 2.5 Flash',
 		tier: 'fast',
@@ -49,6 +42,5 @@ export const CURATED_MODELS = [
 		tier: 'best',
 		vision: true,
 		tools: true
-	},
-	{ id: 'openai/gpt-5.4', name: 'GPT-5.4', tier: 'frontier', vision: true, tools: true }
+	}
 ] as const;
