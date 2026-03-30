@@ -44,10 +44,17 @@ export const CURATED_MODELS = [
 		tools: true
 	},
 	{
-		id: 'deepseek/deepseek-v3.2',
-		name: 'DeepSeek V3.2',
-		tier: 'budget',
+		id: 'deepseek/deepseek-r1',
+		name: 'DeepSeek R1',
+		tier: 'quality',
 		vision: false,
+		tools: true
+	},
+	{
+		id: 'moonshotai/kimi-k2.5',
+		name: 'Kimi K2.5',
+		tier: 'quality',
+		vision: true,
 		tools: true
 	}
 ] as const;

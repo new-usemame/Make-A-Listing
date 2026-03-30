@@ -13,12 +13,13 @@ describe('openrouter', () => {
 	});
 
 	it('CURATED_MODELS contains expected entries', () => {
-		expect(CURATED_MODELS.length).toBe(6);
+		expect(CURATED_MODELS.length).toBe(7);
 		const ids = CURATED_MODELS.map((m) => m.id);
 		expect(ids).toContain('openai/gpt-4o-mini');
 		expect(ids).toContain('anthropic/claude-sonnet-4.5');
 		expect(ids).toContain('anthropic/claude-4.6-sonnet');
-		expect(ids).toContain('deepseek/deepseek-v3.2');
+		expect(ids).toContain('deepseek/deepseek-r1');
+		expect(ids).toContain('moonshotai/kimi-k2.5');
 	});
 });
 
@@ -32,6 +33,19 @@ describe.skipIf(!apiKey)('OpenRouter model validation (live API)', () => {
 		return buildOpenRouterClient(apiKey!);
 	}
 
+	// Thinking models (DeepSeek R1, Kimi K2.5) may return content in a
+	// `reasoning` field with `content: null` depending on SDK parsing.
+	// We check the raw response to handle both cases.
+	function hasResponse(res: unknown): boolean {
+		const r = res as {
+			choices: Array<{
+				message: { content?: string | null; reasoning?: string | null };
+			}>;
+		};
+		const msg = r.choices[0]?.message;
+		return !!(msg?.content || msg?.reasoning);
+	}
+
 	for (const model of CURATED_MODELS) {
 		describe(model.name, () => {
 			it('handles text completion', async () => {
@@ -39,10 +53,10 @@ describe.skipIf(!apiKey)('OpenRouter model validation (live API)', () => {
 				const res = await client.chat.completions.create({
 					model: model.id,
 					messages: [{ role: 'user', content: 'Reply with exactly: OK' }],
-					max_tokens: 10
+					max_tokens: 100
 				});
-				expect(res.choices[0]?.message?.content).toBeTruthy();
-			}, 30_000);
+				expect(hasResponse(res)).toBe(true);
+			}, 60_000);
 
 			it.skipIf(!model.vision)('handles vision (image input)', async () => {
 				const client = makeClient();
@@ -60,10 +74,10 @@ describe.skipIf(!apiKey)('OpenRouter model validation (live API)', () => {
 							]
 						}
 					],
-					max_tokens: 10
+					max_tokens: 100
 				});
-				expect(res.choices[0]?.message?.content).toBeTruthy();
-			}, 30_000);
+				expect(hasResponse(res)).toBe(true);
+			}, 60_000);
 		});
 	}
 });
