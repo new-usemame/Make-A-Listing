@@ -23,7 +23,7 @@
 
 		<div class="reveal reveal-delay-2 mt-14 flex items-center justify-center flex-wrap gap-8 sm:gap-12">
 			{#each [ebayLogo, poshmarkLogo, mercariLogo, depopLogo] as logo}
-				<div class="platform-glow w-28 sm:w-32 h-12 flex items-center justify-center opacity-60 hover:opacity-100 transition-opacity">
+				<div class="platform-glow w-28 sm:w-32 h-12 flex items-center justify-center opacity-80 hover:opacity-100 transition-opacity">
 					{@html logo}
 				</div>
 			{/each}
