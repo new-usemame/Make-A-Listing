@@ -5,15 +5,7 @@ import { users, platforms } from '$lib/server/db/schema';
 import { encrypt, decrypt, maskApiKey } from '$lib/server/crypto';
 import { eq, and, or, isNull } from 'drizzle-orm';
 import { v4 as uuid } from 'uuid';
-
-const CURATED_MODELS = [
-	{ id: 'openai/gpt-4o-mini', name: 'GPT-4o Mini', tier: 'budget' },
-	{ id: 'openai/gpt-4.1-mini', name: 'GPT-4.1 Mini', tier: 'budget' },
-	{ id: 'google/gemini-2.5-flash', name: 'Gemini 2.5 Flash', tier: 'fast' },
-	{ id: 'anthropic/claude-4.6-sonnet', name: 'Claude 4.6 Sonnet', tier: 'quality' },
-	{ id: 'anthropic/claude-4.6-opus', name: 'Claude 4.6 Opus', tier: 'best' },
-	{ id: 'openai/gpt-5.4', name: 'GPT-5.4', tier: 'frontier' }
-];
+import { CURATED_MODELS } from '$lib/server/openrouter';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const userId = locals.user!.id;
