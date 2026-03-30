@@ -22,6 +22,18 @@
 	let streamingListings = $state<Record<string, string>>({});
 	let expandedCards = $state<Record<string, boolean>>({});
 	let expandedHistory = $state<Record<string, boolean>>({});
+	let selectedModel = $state(data.preferredModel);
+
+	async function updateModel(modelId: string) {
+		selectedModel = modelId;
+		const form = new FormData();
+		form.append('model', modelId);
+		await fetch('/app/settings?/updateModel', {
+			method: 'POST',
+			body: form,
+			headers: { 'x-sveltekit-action': 'true' }
+		});
+	}
 
 	function renderMarkdown(md: string): string {
 		return DOMPurify.sanitize(marked.parse(md) as string);
@@ -191,33 +203,46 @@
 					<SystemPromptBadge active={data.hasSystemPrompt} />
 				</div>
 
-				<button
-					type="button"
-					onclick={generate}
-					disabled={generating || !prompt.trim() || selectedPlatforms.length === 0}
-					class="px-5 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
-				>
-					{#if generating}
-						<svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
-							<circle
-								class="opacity-25"
-								cx="12"
-								cy="12"
-								r="10"
-								stroke="currentColor"
-								stroke-width="4"
-							></circle>
-							<path
-								class="opacity-75"
-								fill="currentColor"
-								d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-							></path>
-						</svg>
-						Generating...
-					{:else}
-						Generate Listings
-					{/if}
-				</button>
+				<div class="flex items-center gap-2">
+					<select
+						bind:value={selectedModel}
+						onchange={(e) => updateModel(e.currentTarget.value)}
+						disabled={generating}
+						class="rounded-lg border border-gray-300 px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:opacity-50"
+					>
+						{#each data.models as model}
+							<option value={model.id}>{model.name}</option>
+						{/each}
+					</select>
+
+					<button
+						type="button"
+						onclick={generate}
+						disabled={generating || !prompt.trim() || selectedPlatforms.length === 0}
+						class="px-5 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
+					>
+						{#if generating}
+							<svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+								<circle
+									class="opacity-25"
+									cx="12"
+									cy="12"
+									r="10"
+									stroke="currentColor"
+									stroke-width="4"
+								></circle>
+								<path
+									class="opacity-75"
+									fill="currentColor"
+									d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+								></path>
+							</svg>
+							Generating...
+						{:else}
+							Generate Listings
+						{/if}
+					</button>
+				</div>
 			</div>
 		</div>
 	</section>
