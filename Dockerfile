@@ -3,7 +3,7 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 COPY . .
-RUN mkdir -p data && npm run build
+RUN rm -f data && mkdir -p data && npm run build
 RUN npm prune --production
 
 FROM node:22-slim
