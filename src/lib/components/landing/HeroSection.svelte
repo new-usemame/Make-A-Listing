@@ -63,7 +63,7 @@
 					<div class="absolute -inset-4 rounded-3xl opacity-40 blur-2xl"
 						style="background: linear-gradient(135deg, var(--blue) 0%, var(--amber) 100%);"></div>
 					<img
-						src="/landing/hero-mockup.webp"
+						src="/landing/hero-mockup.webp?v=2"
 						alt="Make a Listing app showing AI-generated product listings for eBay, Poshmark, Mercari and Depop"
 						class="relative w-full rounded-2xl border border-white/10 shadow-2xl"
 						loading="eager"

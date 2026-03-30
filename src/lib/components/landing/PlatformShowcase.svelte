@@ -1,6 +1,12 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { ebayLogo, poshmarkLogo, mercariLogo, depopLogo } from './icons';
+
+	const platforms = [
+		{ name: 'eBay', color: '#e53238' },
+		{ name: 'Poshmark', color: '#b01c2e' },
+		{ name: 'Mercari', color: '#0a8bc1' },
+		{ name: 'Depop', color: '#ff2300' },
+	];
 
 	let section: HTMLElement;
 	onMount(() => {
@@ -21,13 +27,16 @@
 			<span class="italic" style="color: var(--blue);">Every Platform.</span>
 		</h2>
 
-		<div class="reveal reveal-delay-2 mt-14 flex items-center justify-center flex-wrap gap-8 sm:gap-12">
-			{#each [ebayLogo, poshmarkLogo, mercariLogo, depopLogo] as logo}
-				<div class="platform-glow w-28 sm:w-32 h-12 flex items-center justify-center opacity-80 hover:opacity-100 transition-opacity">
-					{@html logo}
-				</div>
+		<div class="reveal reveal-delay-2 mt-14 flex items-center justify-center flex-wrap gap-6 sm:gap-10">
+			{#each platforms as platform}
+				<span
+					class="platform-glow text-xl sm:text-2xl font-bold tracking-tight cursor-default"
+					style="color: {platform.color};"
+				>
+					{platform.name}
+				</span>
 			{/each}
-			<span class="platform-glow rounded-full border-2 border-dashed border-[var(--navy)]/20 px-5 py-2.5
+			<span class="platform-glow rounded-full border-2 border-dashed border-[var(--navy)]/30 px-5 py-2
 				text-sm font-semibold text-[var(--navy)]/50 hover:border-[var(--blue)] hover:text-[var(--blue)] transition-colors cursor-default">
 				+ Custom
 			</span>
