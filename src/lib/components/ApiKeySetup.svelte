@@ -21,6 +21,9 @@
 
 			const res = await fetch('/app/settings?/updateApiKey', {
 				method: 'POST',
+				headers: {
+					'x-sveltekit-action': 'true'
+				},
 				body: formData
 			});
 
@@ -69,6 +72,7 @@
 				bind:value={apiKey}
 				onkeydown={handleKeydown}
 				placeholder="sk-or-..."
+				aria-label="OpenRouter API key"
 				class="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400"
 				disabled={saving}
 			/>
@@ -88,6 +92,7 @@
 		<div class="mt-4">
 			<button
 				onclick={() => helpExpanded = !helpExpanded}
+				aria-expanded={helpExpanded}
 				class="text-sm text-indigo-600 hover:text-indigo-800 font-medium flex items-center gap-1"
 			>
 				<span class="text-xs">{helpExpanded ? '▼' : '▶'}</span>
