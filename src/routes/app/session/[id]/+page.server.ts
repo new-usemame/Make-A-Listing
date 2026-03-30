@@ -3,6 +3,7 @@ import type { PageServerLoad } from './$types';
 import { db } from '$lib/server/db';
 import { sessions, messages, listings, platforms, users } from '$lib/server/db/schema';
 import { eq, or, isNull } from 'drizzle-orm';
+import { CURATED_MODELS } from '$lib/server/openrouter';
 
 export const load: PageServerLoad = async ({ params, locals }) => {
 	const session = db.select().from(sessions).where(eq(sessions.id, params.id)).get();
@@ -50,6 +51,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 		platforms: userPlatforms.map((p) => ({ id: p.id, name: p.name, slug: p.slug })),
 		hasApiKey: !!user.openrouterApiKey,
 		hasSystemPrompt: !!user.systemPrompt,
-		preferredModel: user.preferredModel
+		preferredModel: user.preferredModel,
+		models: CURATED_MODELS.map(m => ({ id: m.id, name: m.name, tier: m.tier }))
 	};
 };
