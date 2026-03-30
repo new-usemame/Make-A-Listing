@@ -4,6 +4,7 @@
 	import PlatformSelector from '$lib/components/PlatformSelector.svelte';
 	import FileUpload from '$lib/components/FileUpload.svelte';
 	import SystemPromptBadge from '$lib/components/SystemPromptBadge.svelte';
+	import ApiKeySetup from '$lib/components/ApiKeySetup.svelte';
 	import { invalidateAll } from '$app/navigation';
 
 	let { data } = $props();
@@ -48,11 +49,6 @@
 
 	async function generate() {
 		if (!prompt.trim() || selectedPlatforms.length === 0 || generating) return;
-		if (!data.hasApiKey) {
-			alert('Please add your OpenRouter API key in Settings first.');
-			return;
-		}
-
 		generating = true;
 		streamingListings = {};
 
@@ -143,10 +139,14 @@
 </script>
 
 <svelte:head>
-	<title>{data.session.title || 'New Session'} - Zolan</title>
+	<title>{data.session.title || 'New Session'} - Make a Listing</title>
 </svelte:head>
 
 <div class="space-y-6">
+	{#if !data.hasApiKey}
+		<ApiKeySetup />
+	{/if}
+
 	<!-- Input Area -->
 	<section class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 space-y-4">
 		<FileUpload
@@ -178,14 +178,6 @@
 			<div class="flex items-center justify-between">
 				<div class="flex items-center gap-3">
 					<SystemPromptBadge active={data.hasSystemPrompt} />
-					{#if !data.hasApiKey}
-						<a
-							href="/app/settings"
-							class="text-xs text-amber-600 hover:text-amber-700 font-medium"
-						>
-							API key required
-						</a>
-					{/if}
 				</div>
 
 				<button
