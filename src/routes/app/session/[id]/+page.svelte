@@ -9,6 +9,7 @@
 
 	let { data } = $props();
 
+	let localPlatforms = $state([...data.platforms]);
 	let prompt = $state('');
 	let selectedPlatforms = $state<string[]>([]);
 	let images = $state<File[]>([]);
@@ -22,8 +23,13 @@
 		return DOMPurify.sanitize(marked.parse(md) as string);
 	}
 
+	function handlePlatformAdded(platform: { id: string; name: string; slug: string; description: string | null }) {
+		localPlatforms = [...localPlatforms, { id: platform.id, name: platform.name, slug: platform.slug }];
+		selectedPlatforms = [...selectedPlatforms, platform.id];
+	}
+
 	function platformName(id: string): string {
-		return data.platforms.find((p) => p.id === id)?.name ?? id;
+		return localPlatforms.find((p) => p.id === id)?.name ?? id;
 	}
 
 	function preview(md: string, maxLen = 120): string {
@@ -169,9 +175,10 @@
 			<div role="group" aria-label="Select platforms">
 				<span class="block text-xs font-medium text-gray-500 mb-1.5">Select platforms</span>
 				<PlatformSelector
-					platforms={data.platforms}
+					platforms={localPlatforms}
 					selected={selectedPlatforms}
 					onchange={(s) => (selectedPlatforms = s)}
+					onadd={handlePlatformAdded}
 				/>
 			</div>
 

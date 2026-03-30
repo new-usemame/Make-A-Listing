@@ -1,4 +1,6 @@
 <script lang="ts">
+	import AddPlatformModal from './AddPlatformModal.svelte';
+
 	interface Platform {
 		id: string;
 		name: string;
@@ -9,9 +11,12 @@
 		platforms: Platform[];
 		selected: string[];
 		onchange: (selected: string[]) => void;
+		onadd?: (platform: { id: string; name: string; slug: string; description: string | null }) => void;
 	}
 
-	let { platforms, selected, onchange }: Props = $props();
+	let { platforms, selected, onchange, onadd }: Props = $props();
+
+	let showAddModal = $state(false);
 
 	function toggle(id: string) {
 		if (selected.includes(id)) {
@@ -36,4 +41,22 @@
 			{platform.name}
 		</button>
 	{/each}
+
+	{#if onadd}
+		<button
+			type="button"
+			onclick={() => (showAddModal = true)}
+			class="shrink-0 px-3 py-1.5 rounded-full text-sm font-medium transition-colors border border-dashed border-gray-300 text-gray-400 hover:border-blue-400 hover:text-blue-600"
+		>
+			+ Platform
+		</button>
+	{/if}
 </div>
+
+{#if onadd}
+	<AddPlatformModal
+		open={showAddModal}
+		onclose={() => (showAddModal = false)}
+		onadd={(p) => onadd?.(p)}
+	/>
+{/if}
