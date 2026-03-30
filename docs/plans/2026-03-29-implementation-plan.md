@@ -1,4 +1,4 @@
-# Zolan Listing Generator — Implementation Plan
+# Make a Listing — Implementation Plan
 
 > **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
@@ -350,7 +350,7 @@ if (!existsSync(DATA_DIR)) {
   mkdirSync(DATA_DIR, { recursive: true });
 }
 
-const sqlite = new Database(join(DATA_DIR, 'zolan.db'));
+const sqlite = new Database(join(DATA_DIR, 'makealisting.db'));
 
 // Enable WAL mode for better concurrent read performance
 sqlite.pragma('journal_mode = WAL');
@@ -371,7 +371,7 @@ export default defineConfig({
   out: './drizzle',
   dialect: 'sqlite',
   dbCredentials: {
-    url: './data/zolan.db'
+    url: './data/makealisting.db'
   }
 });
 ```
@@ -1069,13 +1069,13 @@ export const load: LayoutServerLoad = async ({ locals }) => {
     title?: string;
     username: string;
   }
-  let { title = 'Zolan Listings', username }: Props = $props();
+  let { title = 'Make a Listing', username }: Props = $props();
 </script>
 
 <header class="sticky top-0 z-40 bg-white border-b border-gray-200">
   <div class="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
     <div class="flex items-center gap-3">
-      <a href="/app" class="font-bold text-lg text-gray-900">Zolan</a>
+      <a href="/app" class="font-bold text-lg text-gray-900">Make a Listing</a>
       <span class="text-gray-400 hidden sm:inline">|</span>
       <span class="text-sm text-gray-600 hidden sm:inline truncate max-w-[200px]">{title}</span>
     </div>
@@ -1885,7 +1885,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 </script>
 
 <svelte:head>
-  <title>{data.session.title || 'New Session'} — Zolan</title>
+  <title>{data.session.title || 'New Session'} — Make a Listing</title>
 </svelte:head>
 
 <div class="space-y-6">
@@ -2224,8 +2224,8 @@ export function buildOpenRouterClient(apiKey: string): OpenAI {
     baseURL: 'https://openrouter.ai/api/v1',
     apiKey,
     defaultHeaders: {
-      'HTTP-Referer': 'https://zolan.app',
-      'X-Title': 'Zolan Listing Generator'
+      'HTTP-Referer': 'https://makealisting.com',
+      'X-Title': 'Make a Listing'
     }
   });
 }
@@ -3179,8 +3179,8 @@ export default defineConfig({
     SvelteKitPWA({
       registerType: 'autoUpdate',
       manifest: {
-        name: 'Zolan Listing Generator',
-        short_name: 'Zolan',
+        name: 'Make a Listing',
+        short_name: 'Make a Listing',
         description: 'Generate e-commerce listings for multiple platforms',
         theme_color: '#2563eb',
         background_color: '#f9fafb',
@@ -3224,7 +3224,7 @@ Update `src/app.html`:
     <meta name="theme-color" content="#2563eb" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="apple-mobile-web-app-title" content="Zolan" />
+    <meta name="apple-mobile-web-app-title" content="Make a Listing" />
     <link rel="apple-touch-icon" href="/icon-192.png" />
     %sveltekit.head%
   </head>
@@ -3355,7 +3355,7 @@ CMD ["node", "build"]
 `docker-compose.yml`:
 ```yaml
 services:
-  zolan:
+  makealisting:
     build: .
     ports:
       - "3000:3000"

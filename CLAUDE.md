@@ -1,4 +1,4 @@
-# Zolan Listing Generator
+# Make a Listing
 
 ## What This Is
 
@@ -56,20 +56,20 @@ src/routes/              # SvelteKit file-based routing
 ## Deployment
 
 - **Server:** teenyverse (10.0.30.36), Ubuntu 24.04, Docker
-- **Container:** `zolan-listings` on port 3050 (localhost only)
+- **Container:** `makealisting` on port 3050 (localhost only)
 - **Tunnel:** Cloudflare tunnel `ebf691d0...` routes makealisting.com → localhost:3050
 - **Tunnel config:** `/etc/cloudflared/config.yml` (edit `~/.cloudflared/config.yml` then sudo cp)
 - **Resource limits:** 512MB RAM, 1 CPU core
-- **Data:** `/home/defaultuser/zolan-listings/data/` (SQLite DB + uploads)
+- **Data:** `/home/defaultuser/makealisting/data/` (SQLite DB + uploads)
 
 ### Redeployment
 
 ```bash
 # From this machine:
-rsync -avz --exclude node_modules --exclude .svelte-kit --exclude build --exclude data --exclude .env -e ssh . defaultuser@10.0.30.36:/home/defaultuser/zolan-listings/
+rsync -avz --exclude node_modules --exclude .svelte-kit --exclude build --exclude data --exclude .env -e ssh . defaultuser@10.0.30.36:/home/defaultuser/makealisting/
 
 # On teenyverse (or via SSH):
-cd /home/defaultuser/zolan-listings
+cd /home/defaultuser/makealisting
 docker compose down && docker compose build && docker compose up -d
 ```
 

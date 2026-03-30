@@ -23,7 +23,7 @@
 </script>
 
 <svelte:head>
-	<title>Settings — Zolan</title>
+	<title>Settings — Make a Listing</title>
 </svelte:head>
 
 <div class="space-y-6">

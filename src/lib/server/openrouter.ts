@@ -7,8 +7,8 @@ export function buildOpenRouterClient(apiKey: string): OpenAI {
 		baseURL: 'https://openrouter.ai/api/v1',
 		apiKey,
 		defaultHeaders: {
-			'HTTP-Referer': 'https://zolan.app',
-			'X-Title': 'Zolan Listing Generator'
+			'HTTP-Referer': 'https://makealisting.com',
+			'X-Title': 'Make a Listing'
 		}
 	});
 }

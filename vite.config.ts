@@ -10,8 +10,8 @@ export default defineConfig({
 		SvelteKitPWA({
 			registerType: 'autoUpdate',
 			manifest: {
-				name: 'Zolan Listing Generator',
-				short_name: 'Zolan',
+				name: 'Make a Listing',
+				short_name: 'Make a Listing',
 				description: 'Generate e-commerce listings for multiple platforms',
 				theme_color: '#2563eb',
 				background_color: '#f9fafb',

@@ -4,5 +4,5 @@ export default defineConfig({
 	schema: './src/lib/server/db/schema.ts',
 	out: './drizzle',
 	dialect: 'sqlite',
-	dbCredentials: { url: './data/zolan.db' }
+	dbCredentials: { url: './data/makealisting.db' }
 });

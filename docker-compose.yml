@@ -1,7 +1,7 @@
 services:
-  zolan:
+  makealisting:
     build: .
-    container_name: zolan-listings
+    container_name: makealisting
     ports:
       - "127.0.0.1:3050:3050"
     volumes:

@@ -1,4 +1,4 @@
-# Zolan Listing Generator — Design Document
+# Make a Listing — Design Document
 
 **Date:** 2026-03-29
 **Status:** Approved

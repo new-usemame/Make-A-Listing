@@ -10,7 +10,7 @@
 <header class="sticky top-0 z-40 bg-white border-b border-gray-200">
 	<div class="max-w-4xl mx-auto px-4 h-14 flex items-center justify-between">
 		<div class="flex items-center gap-3">
-			<a href="/app" class="text-xl font-bold text-blue-600 hover:text-blue-700">Zolan</a>
+			<a href="/app" class="text-xl font-bold text-blue-600 hover:text-blue-700">Make a Listing</a>
 			{#if title}
 				<span class="hidden md:inline text-sm text-gray-500 truncate max-w-xs">{title}</span>
 			{/if}
