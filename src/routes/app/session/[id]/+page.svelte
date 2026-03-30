@@ -20,6 +20,7 @@
 	let pdfFile = $state<File | null>(null);
 	let generating = $state(false);
 	let streamingListings = $state<Record<string, string>>({});
+	let pipelineStatus = $state('Thinking...');
 	let expandedCards = $state<Record<string, boolean>>({});
 	let expandedHistory = $state<Record<string, boolean>>({});
 	let selectedModel = $state(data.preferredModel);
@@ -73,6 +74,7 @@
 		if (!prompt.trim() || selectedPlatforms.length === 0 || generating) return;
 		generating = true;
 		streamingListings = {};
+		pipelineStatus = 'Thinking...';
 
 		// Initialize streaming state for each selected platform
 		for (const pid of selectedPlatforms) {
@@ -131,7 +133,9 @@
 						try {
 							const event = JSON.parse(payload);
 
-							if (event.type === 'token' && event.platformId) {
+							if (event.type === 'status') {
+								pipelineStatus = event.message;
+							} else if (event.type === 'token' && event.platformId) {
 								streamingListings[event.platformId] =
 									(streamingListings[event.platformId] ?? '') + event.content;
 							} else if (event.type === 'error') {
@@ -317,7 +321,7 @@
 											d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
 										></path>
 									</svg>
-									Waiting for tokens...
+									{pipelineStatus}
 								</div>
 							{/if}
 						</div>
