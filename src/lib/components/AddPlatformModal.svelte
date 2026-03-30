@@ -11,6 +11,17 @@
 	let description = $state('');
 	let error = $state('');
 	let submitting = $state(false);
+	let nameInput = $state<HTMLInputElement | null>(null);
+
+	$effect(() => {
+		if (open) {
+			name = '';
+			description = '';
+			error = '';
+			// Focus after DOM updates
+			setTimeout(() => nameInput?.focus(), 0);
+		}
+	});
 
 	function handleKeydown(e: KeyboardEvent) {
 		if (e.key === 'Escape') onclose();
@@ -87,13 +98,15 @@
 			</div>
 
 			<!-- Form -->
-			<div class="space-y-3">
+			<form class="space-y-3" onsubmit={(e) => { e.preventDefault(); submit(); }}>
 				<div>
 					<label for="platform-name" class="block text-sm font-medium text-gray-700 mb-1">Name</label>
 					<input
 						id="platform-name"
 						type="text"
 						bind:value={name}
+						bind:this={nameInput}
+						maxlength={100}
 						placeholder="e.g. Facebook Marketplace"
 						class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
 					/>
@@ -113,26 +126,25 @@
 				{#if error}
 					<p class="text-sm text-red-600">{error}</p>
 				{/if}
-			</div>
 
-			<!-- Actions -->
-			<div class="flex justify-end gap-2 pt-1">
-				<button
-					type="button"
-					onclick={onclose}
-					class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
-				>
-					Cancel
-				</button>
-				<button
-					type="button"
-					onclick={submit}
-					disabled={submitting}
-					class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 disabled:opacity-50"
-				>
-					{submitting ? 'Adding...' : 'Add Platform'}
-				</button>
-			</div>
+				<!-- Actions -->
+				<div class="flex justify-end gap-2 pt-1">
+					<button
+						type="button"
+						onclick={onclose}
+						class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
+					>
+						Cancel
+					</button>
+					<button
+						type="submit"
+						disabled={submitting}
+						class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 disabled:opacity-50"
+					>
+						{submitting ? 'Adding...' : 'Add Platform'}
+					</button>
+				</div>
+			</form>
 		</div>
 	</div>
 {/if}
