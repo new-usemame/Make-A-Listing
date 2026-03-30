@@ -9,7 +9,11 @@
 
 	let { data } = $props();
 
-	let localPlatforms = $state([...data.platforms]);
+	let addedPlatforms = $state<Array<{ id: string; name: string; slug: string }>>([]);
+	let allPlatforms = $derived([
+		...data.platforms,
+		...addedPlatforms.filter((ap) => !data.platforms.some((dp) => dp.id === ap.id))
+	]);
 	let prompt = $state('');
 	let selectedPlatforms = $state<string[]>([]);
 	let images = $state<File[]>([]);
@@ -24,12 +28,12 @@
 	}
 
 	function handlePlatformAdded(platform: { id: string; name: string; slug: string; description: string | null }) {
-		localPlatforms = [...localPlatforms, { id: platform.id, name: platform.name, slug: platform.slug }];
+		addedPlatforms = [...addedPlatforms, { id: platform.id, name: platform.name, slug: platform.slug }];
 		selectedPlatforms = [...selectedPlatforms, platform.id];
 	}
 
 	function platformName(id: string): string {
-		return localPlatforms.find((p) => p.id === id)?.name ?? id;
+		return allPlatforms.find((p) => p.id === id)?.name ?? id;
 	}
 
 	function preview(md: string, maxLen = 120): string {
@@ -175,7 +179,7 @@
 			<div role="group" aria-label="Select platforms">
 				<span class="block text-xs font-medium text-gray-500 mb-1.5">Select platforms</span>
 				<PlatformSelector
-					platforms={localPlatforms}
+					platforms={allPlatforms}
 					selected={selectedPlatforms}
 					onchange={(s) => (selectedPlatforms = s)}
 					onadd={handlePlatformAdded}
