@@ -30,6 +30,13 @@ export const CURATED_MODELS = [
 		tools: true
 	},
 	{
+		id: 'anthropic/claude-sonnet-4.5',
+		name: 'Claude Sonnet 4.5',
+		tier: 'quality',
+		vision: true,
+		tools: true
+	},
+	{
 		id: 'anthropic/claude-4.6-sonnet',
 		name: 'Claude 4.6 Sonnet',
 		tier: 'quality',
