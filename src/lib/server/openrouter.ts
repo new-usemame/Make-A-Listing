@@ -42,5 +42,12 @@ export const CURATED_MODELS = [
 		tier: 'best',
 		vision: true,
 		tools: true
+	},
+	{
+		id: 'deepseek/deepseek-v3.2',
+		name: 'DeepSeek V3.2',
+		tier: 'budget',
+		vision: false,
+		tools: true
 	}
 ] as const;

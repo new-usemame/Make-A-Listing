@@ -13,11 +13,12 @@ describe('openrouter', () => {
 	});
 
 	it('CURATED_MODELS contains expected entries', () => {
-		expect(CURATED_MODELS.length).toBe(5);
+		expect(CURATED_MODELS.length).toBe(6);
 		const ids = CURATED_MODELS.map((m) => m.id);
 		expect(ids).toContain('openai/gpt-4o-mini');
 		expect(ids).toContain('anthropic/claude-sonnet-4.5');
 		expect(ids).toContain('anthropic/claude-4.6-sonnet');
+		expect(ids).toContain('deepseek/deepseek-v3.2');
 	});
 });
 
@@ -43,7 +44,7 @@ describe.skipIf(!apiKey)('OpenRouter model validation (live API)', () => {
 				expect(res.choices[0]?.message?.content).toBeTruthy();
 			}, 30_000);
 
-			it('handles vision (image input)', async () => {
+			it.skipIf(!model.vision)('handles vision (image input)', async () => {
 				const client = makeClient();
 				const res = await client.chat.completions.create({
 					model: model.id,
