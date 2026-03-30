@@ -1,12 +1,27 @@
 services:
   zolan:
     build: .
+    container_name: zolan-listings
     ports:
-      - "3000:3000"
+      - "127.0.0.1:3050:3050"
     volumes:
       - ./data:/app/data
+    env_file:
+      - .env
     environment:
-      - ENCRYPTION_KEY=${ENCRYPTION_KEY}
-      - TAVILY_API_KEY=${TAVILY_API_KEY}
-      - ORIGIN=https://your-domain.example.com
+      - NODE_ENV=production
+      - PORT=3050
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '1.0'
+        reservations:
+          memory: 128M
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:3050').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
