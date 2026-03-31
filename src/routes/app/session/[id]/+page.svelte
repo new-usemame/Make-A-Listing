@@ -177,7 +177,7 @@
 	{/if}
 
 	<!-- Input Area -->
-	<section class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 space-y-4">
+	<section class="bg-white rounded-xl border p-4 space-y-4" style="border-color: var(--cream-dark); box-shadow: 0 1px 3px rgba(12, 18, 34, 0.04);">
 		<FileUpload
 			{images}
 			{pdfFile}
@@ -191,12 +191,13 @@
 			placeholder="Describe your product... (Cmd/Ctrl+Enter to generate)"
 			rows={4}
 			disabled={generating}
-			class="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-50 disabled:text-gray-400"
+			class="w-full rounded-lg border px-4 py-3 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-[var(--blue)] focus:border-[var(--blue)] disabled:text-gray-400"
+			style="border-color: var(--cream-dark); background: var(--cream);"
 		></textarea>
 
 		<div class="space-y-3">
 			<div role="group" aria-label="Select platforms">
-				<span class="block text-xs font-medium text-gray-500 mb-1.5">Select platforms</span>
+				<span class="block text-xs font-medium mb-1.5" style="color: var(--navy); opacity: 0.5;">Select platforms</span>
 				<PlatformSelector
 					platforms={allPlatforms}
 					selected={selectedPlatforms}
@@ -211,22 +212,28 @@
 				</div>
 
 				<div class="flex items-center gap-2">
-					<select
-						bind:value={selectedModel}
-						onchange={(e) => updateModel(e.currentTarget.value)}
-						disabled={generating}
-						class="rounded-lg border border-gray-300 px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:opacity-50"
-					>
-						{#each data.models as model}
-							<option value={model.id}>{model.name}</option>
-						{/each}
-					</select>
+					<div class="relative">
+						<select
+							bind:value={selectedModel}
+							onchange={(e) => updateModel(e.currentTarget.value)}
+							disabled={generating}
+							class="appearance-none h-9 rounded-lg border pl-3 pr-8 text-sm font-medium bg-white focus:outline-none focus:ring-2 focus:ring-[var(--blue)] focus:border-[var(--blue)] disabled:opacity-50 cursor-pointer"
+							style="border-color: var(--cream-dark); color: var(--navy);"
+						>
+							{#each data.models as model}
+								<option value={model.id}>{model.name}</option>
+							{/each}
+						</select>
+						<svg class="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5" style="color: var(--navy); opacity: 0.4;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+						</svg>
+					</div>
 
 					<button
 						type="button"
 						onclick={generate}
 						disabled={generating || !prompt.trim() || selectedPlatforms.length === 0}
-						class="px-5 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
+						class="h-9 px-5 text-white text-sm font-semibold rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-shadow flex items-center gap-2 btn-shimmer shadow-lg shadow-blue-500/20 hover:shadow-blue-500/35"
 					>
 						{#if generating}
 							<svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
@@ -257,21 +264,23 @@
 	<!-- Streaming Results -->
 	{#if Object.keys(streamingListings).length > 0}
 		<section class="space-y-3">
-			<h2 class="text-sm font-semibold text-gray-500 uppercase tracking-wide">
+			<h2 class="text-xs font-semibold uppercase tracking-wider" style="color: var(--navy); opacity: 0.45;">
 				Generating Listings
 			</h2>
 			{#each Object.entries(streamingListings) as [platformId, content] (platformId)}
-				<div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+				<div class="bg-white rounded-xl border overflow-hidden" style="border-color: var(--cream-dark); box-shadow: 0 1px 3px rgba(12, 18, 34, 0.04);">
 					<button
 						type="button"
-						class="w-full px-4 py-3 flex items-center justify-between text-left hover:bg-gray-50"
+						class="w-full px-4 py-3 flex items-center justify-between text-left transition-colors"
+						style="color: var(--navy);"
 						onclick={() => (expandedCards[platformId] = !expandedCards[platformId])}
 					>
-						<span class="font-medium text-gray-900">{platformName(platformId)}</span>
+						<span class="font-medium">{platformName(platformId)}</span>
 						<svg
-							class="w-5 h-5 text-gray-400 transition-transform {expandedCards[platformId]
+							class="w-4 h-4 transition-transform {expandedCards[platformId]
 								? 'rotate-180'
 								: ''}"
+							style="opacity: 0.3;"
 							fill="none"
 							stroke="currentColor"
 							viewBox="0 0 24 24"
@@ -286,29 +295,31 @@
 					</button>
 
 					{#if expandedCards[platformId]}
-						<div class="border-t border-gray-100 px-4 py-3">
+						<div class="border-t px-4 py-3" style="border-color: var(--cream-dark);">
 							{#if content}
 								<div class="prose prose-sm max-w-none">
 									{@html renderMarkdown(content)}
 								</div>
-								<div class="flex gap-2 mt-3 pt-3 border-t border-gray-100">
+								<div class="flex gap-2 mt-3 pt-3 border-t" style="border-color: var(--cream-dark);">
 									<button
 										type="button"
 										onclick={() => copyRawMd(content)}
-										class="text-xs px-2.5 py-1 rounded border border-gray-300 text-gray-600 hover:bg-gray-50"
+										class="text-xs px-2.5 py-1 rounded border font-medium transition-colors hover:bg-[var(--cream)]"
+										style="border-color: var(--cream-dark); color: var(--navy); opacity: 0.6;"
 									>
 										Copy Raw MD
 									</button>
 									<button
 										type="button"
 										onclick={() => copyText(content)}
-										class="text-xs px-2.5 py-1 rounded border border-gray-300 text-gray-600 hover:bg-gray-50"
+										class="text-xs px-2.5 py-1 rounded border font-medium transition-colors hover:bg-[var(--cream)]"
+										style="border-color: var(--cream-dark); color: var(--navy); opacity: 0.6;"
 									>
 										Copy Text
 									</button>
 								</div>
 							{:else}
-								<div class="flex items-center gap-2 text-sm text-gray-400">
+								<div class="flex items-center gap-2 text-sm" style="color: var(--navy); opacity: 0.4;">
 									<svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
 										<circle
 											class="opacity-25"
@@ -337,21 +348,23 @@
 	<!-- Completed Listings (latest generation, stays visible until next generate) -->
 	{#if Object.keys(completedListings).length > 0}
 		<section class="space-y-3">
-			<h2 class="text-sm font-semibold text-gray-500 uppercase tracking-wide">
+			<h2 class="text-xs font-semibold uppercase tracking-wider" style="color: var(--navy); opacity: 0.45;">
 				Latest Listings
 			</h2>
 			{#each Object.entries(completedListings) as [platformId, content] (platformId)}
-				<div class="bg-white rounded-xl shadow-sm border border-blue-200 overflow-hidden">
+				<div class="bg-white rounded-xl border overflow-hidden" style="border-color: var(--blue-light); box-shadow: 0 1px 3px rgba(37, 99, 235, 0.06);">
 					<button
 						type="button"
-						class="w-full px-4 py-3 flex items-center justify-between text-left hover:bg-gray-50"
+						class="w-full px-4 py-3 flex items-center justify-between text-left transition-colors"
+						style="color: var(--navy);"
 						onclick={() => (expandedCards[platformId] = !expandedCards[platformId])}
 					>
-						<span class="font-medium text-gray-900">{platformName(platformId)}</span>
+						<span class="font-medium">{platformName(platformId)}</span>
 						<svg
-							class="w-5 h-5 text-gray-400 transition-transform {expandedCards[platformId]
+							class="w-4 h-4 transition-transform {expandedCards[platformId]
 								? 'rotate-180'
 								: ''}"
+							style="opacity: 0.3;"
 							fill="none"
 							stroke="currentColor"
 							viewBox="0 0 24 24"
@@ -366,22 +379,24 @@
 					</button>
 
 					{#if expandedCards[platformId] !== false}
-						<div class="border-t border-gray-100 px-4 py-3">
+						<div class="border-t px-4 py-3" style="border-color: var(--cream-dark);">
 							<div class="prose prose-sm max-w-none">
 								{@html renderMarkdown(content)}
 							</div>
-							<div class="flex gap-2 mt-3 pt-3 border-t border-gray-100">
+							<div class="flex gap-2 mt-3 pt-3 border-t" style="border-color: var(--cream-dark);">
 								<button
 									type="button"
 									onclick={() => copyRawMd(content)}
-									class="text-xs px-2.5 py-1 rounded border border-gray-300 text-gray-600 hover:bg-gray-50"
+									class="text-xs px-2.5 py-1 rounded border font-medium transition-colors hover:bg-[var(--cream)]"
+									style="border-color: var(--cream-dark); color: var(--navy); opacity: 0.6;"
 								>
 									Copy Raw MD
 								</button>
 								<button
 									type="button"
 									onclick={() => copyText(content)}
-									class="text-xs px-2.5 py-1 rounded border border-gray-300 text-gray-600 hover:bg-gray-50"
+									class="text-xs px-2.5 py-1 rounded border font-medium transition-colors hover:bg-[var(--cream)]"
+									style="border-color: var(--cream-dark); color: var(--navy); opacity: 0.6;"
 								>
 									Copy Text
 								</button>
@@ -396,14 +411,14 @@
 	<!-- Previous Messages -->
 	{#if data.messages.length > 0}
 		<section class="space-y-3">
-			<h2 class="text-sm font-semibold text-gray-500 uppercase tracking-wide">
+			<h2 class="text-xs font-semibold uppercase tracking-wider" style="color: var(--navy); opacity: 0.45;">
 				Previous Messages
 			</h2>
 			{#each data.messages as message (message.id)}
-				<div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+				<div class="bg-white rounded-xl border overflow-hidden" style="border-color: var(--cream-dark); box-shadow: 0 1px 3px rgba(12, 18, 34, 0.04);">
 					<button
 						type="button"
-						class="w-full px-4 py-3 flex items-center justify-between text-left hover:bg-gray-50"
+						class="w-full px-4 py-3 flex items-center justify-between text-left"
 						onclick={() =>
 							(expandedHistory[message.id] = !expandedHistory[message.id])}
 					>
@@ -411,19 +426,21 @@
 							<span
 								class="shrink-0 text-xs font-medium px-2 py-0.5 rounded-full {message.role ===
 								'user'
-									? 'bg-blue-100 text-blue-700'
-									: 'bg-green-100 text-green-700'}"
+									? 'bg-[var(--blue)]/10 text-[var(--blue)]'
+									: 'bg-[var(--amber)]/15 text-[var(--amber)]'}"
+								style={message.role === 'user' ? 'background: rgba(37,99,235,0.1); color: var(--blue);' : 'background: rgba(245,158,11,0.15); color: #b45309;'}
 							>
 								{message.role}
 							</span>
-							<span class="text-sm text-gray-600 truncate">{preview(message.content)}</span>
+							<span class="text-sm truncate" style="color: var(--navy); opacity: 0.6;">{preview(message.content)}</span>
 						</div>
 						<svg
-							class="w-5 h-5 text-gray-400 shrink-0 transition-transform {expandedHistory[
+							class="w-4 h-4 shrink-0 transition-transform {expandedHistory[
 								message.id
 							]
 								? 'rotate-180'
 								: ''}"
+							style="color: var(--navy); opacity: 0.3;"
 							fill="none"
 							stroke="currentColor"
 							viewBox="0 0 24 24"
@@ -438,14 +455,15 @@
 					</button>
 
 					{#if expandedHistory[message.id]}
-						<div class="border-t border-gray-100 px-4 py-3 space-y-3">
+						<div class="border-t px-4 py-3 space-y-3" style="border-color: var(--cream-dark);">
 							{#if message.images.length > 0}
 								<div class="flex flex-wrap gap-2">
 									{#each message.images as img, i (i)}
 										<img
 											src={img}
 											alt="Attached image {i + 1}"
-											class="w-20 h-20 object-cover rounded-md border border-gray-200"
+											class="w-20 h-20 object-cover rounded-md border"
+											style="border-color: var(--cream-dark);"
 										/>
 									{/each}
 								</div>
@@ -456,24 +474,25 @@
 							</div>
 
 							{#if message.listings.length > 0}
-								<div class="space-y-2 mt-3 pt-3 border-t border-gray-100">
-									<h4 class="text-xs font-semibold text-gray-500 uppercase">Listings</h4>
+								<div class="space-y-2 mt-3 pt-3 border-t" style="border-color: var(--cream-dark);">
+									<h4 class="text-xs font-semibold uppercase" style="color: var(--navy); opacity: 0.4;">Listings</h4>
 									{#each message.listings as listing (listing.id)}
 										{@const expanded = expandedHistory[`listing-${listing.id}`]}
-										<div class="border border-gray-200 rounded-lg overflow-hidden">
+										<div class="border rounded-lg overflow-hidden" style="border-color: var(--cream-dark);">
 											<button
 												type="button"
-												class="w-full px-3 py-2 flex items-center justify-between text-left text-sm hover:bg-gray-50"
+												class="w-full px-3 py-2 flex items-center justify-between text-left text-sm"
 												onclick={() =>
 													(expandedHistory[`listing-${listing.id}`] = !expanded)}
 											>
-												<span class="font-medium text-gray-800">
+												<span class="font-medium" style="color: var(--navy);">
 													{platformName(listing.platformId)}
 												</span>
 												<svg
-													class="w-4 h-4 text-gray-400 transition-transform {expanded
+													class="w-4 h-4 transition-transform {expanded
 														? 'rotate-180'
 														: ''}"
+													style="color: var(--navy); opacity: 0.3;"
 													fill="none"
 													stroke="currentColor"
 													viewBox="0 0 24 24"
@@ -488,22 +507,24 @@
 											</button>
 
 											{#if expanded}
-												<div class="border-t border-gray-100 px-3 py-2">
+												<div class="border-t px-3 py-2" style="border-color: var(--cream-dark);">
 													<div class="prose prose-sm max-w-none">
 														{@html renderMarkdown(listing.markdownContent)}
 													</div>
-													<div class="flex gap-2 mt-2 pt-2 border-t border-gray-100">
+													<div class="flex gap-2 mt-2 pt-2 border-t" style="border-color: var(--cream-dark);">
 														<button
 															type="button"
 															onclick={() => copyRawMd(listing.markdownContent)}
-															class="text-xs px-2.5 py-1 rounded border border-gray-300 text-gray-600 hover:bg-gray-50"
+															class="text-xs px-2.5 py-1 rounded border font-medium transition-colors hover:bg-[var(--cream)]"
+															style="border-color: var(--cream-dark); color: var(--navy); opacity: 0.6;"
 														>
 															Copy Raw MD
 														</button>
 														<button
 															type="button"
 															onclick={() => copyText(listing.markdownContent)}
-															class="text-xs px-2.5 py-1 rounded border border-gray-300 text-gray-600 hover:bg-gray-50"
+															class="text-xs px-2.5 py-1 rounded border font-medium transition-colors hover:bg-[var(--cream)]"
+															style="border-color: var(--cream-dark); color: var(--navy); opacity: 0.6;"
 														>
 															Copy Text
 														</button>

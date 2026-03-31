@@ -71,8 +71,8 @@
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div
 	class="rounded-lg border-2 border-dashed transition-colors p-3 {dragging
-		? 'border-blue-400 bg-blue-50'
-		: 'border-gray-200'}"
+		? 'border-[var(--blue-light)] bg-blue-50'
+		: 'border-[var(--cream-dark)]'}"
 	ondrop={handleDrop}
 	ondragover={handleDragOver}
 	ondragleave={handleDragLeave}
@@ -82,7 +82,8 @@
 			type="button"
 			onclick={() => imageInput.click()}
 			disabled={images.length >= 5}
-			class="inline-flex items-center gap-1 px-3 py-1.5 text-sm font-medium rounded-md border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+			class="inline-flex items-center gap-1 px-3 py-1.5 text-sm font-medium rounded-md border bg-white hover:bg-[var(--cream)] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+			style="border-color: var(--cream-dark); color: var(--navy);"
 		>
 			<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 				<path
@@ -99,7 +100,8 @@
 			type="button"
 			onclick={() => pdfInput.click()}
 			disabled={!!pdfFile}
-			class="inline-flex items-center gap-1 px-3 py-1.5 text-sm font-medium rounded-md border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+			class="inline-flex items-center gap-1 px-3 py-1.5 text-sm font-medium rounded-md border bg-white hover:bg-[var(--cream)] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+			style="border-color: var(--cream-dark); color: var(--navy);"
 		>
 			<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 				<path
@@ -112,7 +114,7 @@
 			PDF
 		</button>
 
-		<span class="text-xs text-gray-400 hidden md:inline">or drag & drop files here</span>
+		<span class="text-xs hidden md:inline" style="color: var(--navy); opacity: 0.3;">or drag & drop files here</span>
 	</div>
 
 	<input
@@ -138,7 +140,8 @@
 					<img
 						src={getImagePreview(image)}
 						alt="Upload preview {i + 1}"
-						class="w-16 h-16 object-cover rounded-md border border-gray-200"
+						class="w-16 h-16 object-cover rounded-md border"
+					style="border-color: var(--cream-dark);"
 					/>
 					<button
 						type="button"
@@ -152,7 +155,8 @@
 
 			{#if pdfFile}
 				<div
-					class="relative group flex items-center gap-2 px-3 py-2 bg-gray-100 rounded-md border border-gray-200"
+					class="relative group flex items-center gap-2 px-3 py-2 rounded-md border"
+					style="background: var(--cream); border-color: var(--cream-dark);"
 				>
 					<svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path
@@ -162,7 +166,7 @@
 							d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"
 						/>
 					</svg>
-					<span class="text-sm text-gray-700 max-w-[120px] truncate">{pdfFile.name}</span>
+					<span class="text-sm max-w-[120px] truncate" style="color: var(--navy);">{pdfFile.name}</span>
 					<button
 						type="button"
 						onclick={removePdf}

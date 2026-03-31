@@ -32,11 +32,12 @@
 		<button
 			type="button"
 			onclick={() => toggle(platform.id)}
-			class="shrink-0 px-3 py-1.5 rounded-full text-sm font-medium transition-colors border {selected.includes(
+			class="shrink-0 px-3 py-1.5 rounded-full text-sm font-medium transition-all border {selected.includes(
 				platform.id
 			)
-				? 'bg-blue-600 text-white border-blue-600'
-				: 'bg-white text-gray-700 border-gray-300 hover:border-blue-400 hover:text-blue-600'}"
+				? 'bg-[var(--blue)] text-white border-[var(--blue)] shadow-sm shadow-blue-500/20'
+				: 'bg-white/60 border-[var(--cream-dark)] hover:border-[var(--blue-light)] hover:text-[var(--blue)]'}"
+			style={selected.includes(platform.id) ? '' : 'color: var(--navy);'}
 		>
 			{platform.name}
 		</button>
@@ -46,7 +47,8 @@
 		<button
 			type="button"
 			onclick={() => (showAddModal = true)}
-			class="shrink-0 px-3 py-1.5 rounded-full text-sm font-medium transition-colors border border-dashed border-gray-300 text-gray-400 hover:border-blue-400 hover:text-blue-600"
+			class="shrink-0 px-3 py-1.5 rounded-full text-sm font-medium transition-all border border-dashed hover:border-[var(--blue-light)] hover:text-[var(--blue)]"
+			style="border-color: var(--cream-dark); color: var(--navy); opacity: 0.4;"
 		>
 			+ Platform
 		</button>

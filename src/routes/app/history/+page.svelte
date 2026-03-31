@@ -45,13 +45,14 @@
 <div class="space-y-4">
 	<!-- Header -->
 	<div class="flex items-center justify-between">
-		<h1 class="text-2xl font-bold text-gray-900">History</h1>
+		<h1 class="font-serif text-2xl tracking-tight" style="color: var(--navy);">History</h1>
 		{#if data.sessions.length > 0}
 			{#if bulkMode}
 				<button
 					type="button"
 					onclick={exitBulkMode}
-					class="text-sm font-medium text-gray-600 hover:text-gray-900"
+					class="text-sm font-medium transition-colors"
+					style="color: var(--navy); opacity: 0.6;"
 				>
 					Cancel
 				</button>
@@ -59,7 +60,8 @@
 				<button
 					type="button"
 					onclick={() => (bulkMode = true)}
-					class="text-sm font-medium text-blue-600 hover:text-blue-700"
+					class="text-sm font-medium"
+					style="color: var(--blue);"
 				>
 					Select
 				</button>
@@ -70,7 +72,8 @@
 	<!-- Search -->
 	<form method="get" class="relative">
 		<svg
-			class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
+			class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5"
+			style="color: var(--navy); opacity: 0.3;"
 			xmlns="http://www.w3.org/2000/svg"
 			fill="none"
 			viewBox="0 0 24 24"
@@ -84,7 +87,8 @@
 			name="q"
 			placeholder="Search sessions..."
 			bind:value={searchValue}
-			class="w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+			class="w-full pl-10 pr-4 py-2.5 rounded-lg border bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[var(--blue)] focus:border-transparent"
+			style="border-color: var(--cream-dark);"
 		/>
 	</form>
 
@@ -92,7 +96,8 @@
 	{#if data.sessions.length === 0}
 		<div class="text-center py-16">
 			<svg
-				class="mx-auto w-12 h-12 text-gray-300 mb-4"
+				class="mx-auto w-12 h-12 mb-4"
+				style="color: var(--navy); opacity: 0.2;"
 				xmlns="http://www.w3.org/2000/svg"
 				fill="none"
 				viewBox="0 0 24 24"
@@ -101,7 +106,7 @@
 			>
 				<path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
 			</svg>
-			<p class="text-gray-500 mb-2">
+			<p class="mb-2" style="color: var(--navy); opacity: 0.5;">
 				{#if data.query}
 					No sessions match "{data.query}"
 				{:else}
@@ -109,7 +114,7 @@
 				{/if}
 			</p>
 			{#if !data.query}
-				<a href="/app" class="text-sm text-blue-600 hover:text-blue-700 font-medium">
+				<a href="/app" class="text-sm font-medium" style="color: var(--blue);">
 					Create your first listing
 				</a>
 			{/if}
@@ -117,13 +122,14 @@
 	{:else}
 		<div class="space-y-2">
 			{#each data.sessions as session (session.id)}
-				<div class="bg-white rounded-lg border border-gray-200 px-4 py-3 flex items-center gap-3 hover:border-gray-300 transition-colors">
+				<div class="bg-white rounded-lg border px-4 py-3 flex items-center gap-3 transition-all hover:shadow-sm" style="border-color: var(--cream-dark);">
 					{#if bulkMode}
 						<input
 							type="checkbox"
 							checked={selected.has(session.id)}
 							onchange={() => toggleSelect(session.id)}
-							class="w-5 h-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500 shrink-0"
+							class="w-5 h-5 rounded text-[var(--blue)] focus:ring-[var(--blue)] shrink-0"
+							style="border-color: var(--cream-dark);"
 						/>
 					{/if}
 
@@ -133,20 +139,20 @@
 						class="flex-1 min-w-0 text-left"
 					>
 						<div class="flex items-center justify-between gap-2">
-							<span class="font-medium text-gray-900 truncate">
+							<span class="font-medium truncate" style="color: var(--navy);">
 								{truncate(session.title, 50)}
 							</span>
-							<span class="text-xs text-gray-400 whitespace-nowrap shrink-0">
+							<span class="text-xs whitespace-nowrap shrink-0" style="color: var(--navy); opacity: 0.35;">
 								{relativeDate(session.updatedAt)}
 							</span>
 						</div>
 						<div class="flex items-center gap-2 mt-1">
 							{#each session.platforms as platform}
-								<span class="text-xs bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full">
+								<span class="text-xs px-2 py-0.5 rounded-full" style="background: var(--cream); color: var(--navy); opacity: 0.6;">
 									{platform}
 								</span>
 							{/each}
-							<span class="text-xs text-gray-400">
+							<span class="text-xs" style="color: var(--navy); opacity: 0.35;">
 								{session.messageCount} message{session.messageCount !== 1 ? 's' : ''}
 							</span>
 						</div>
@@ -165,7 +171,8 @@
 							<input type="hidden" name="sessionId" value={session.id} />
 							<button
 								type="submit"
-								class="p-2 text-gray-400 hover:text-red-500 transition-colors shrink-0"
+								class="p-2 transition-colors shrink-0 hover:text-red-500"
+								style="color: var(--navy); opacity: 0.3;"
 								title="Delete session"
 							>
 								<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
