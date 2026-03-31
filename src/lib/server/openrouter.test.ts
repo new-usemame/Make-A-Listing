@@ -13,9 +13,13 @@ describe('openrouter', () => {
 	});
 
 	it('CURATED_MODELS contains expected entries', () => {
-		expect(CURATED_MODELS.length).toBe(7);
+		expect(CURATED_MODELS.length).toBe(11);
 		const ids = CURATED_MODELS.map((m) => m.id);
 		expect(ids).toContain('openai/gpt-4o-mini');
+		expect(ids).toContain('openai/gpt-4.1');
+		expect(ids).toContain('openai/gpt-4.1-mini');
+		expect(ids).toContain('openai/gpt-5');
+		expect(ids).toContain('openai/gpt-5-mini');
 		expect(ids).toContain('anthropic/claude-sonnet-4.5');
 		expect(ids).toContain('anthropic/claude-4.6-sonnet');
 		expect(ids).toContain('deepseek/deepseek-r1');
@@ -33,27 +37,36 @@ describe.skipIf(!apiKey)('OpenRouter model validation (live API)', () => {
 		return buildOpenRouterClient(apiKey!);
 	}
 
-	// Thinking models (DeepSeek R1, Kimi K2.5) may return content in a
-	// `reasoning` field with `content: null` depending on SDK parsing.
+	// Reasoning models (GPT-5, DeepSeek R1, etc.) may return content in a
+	// `reasoning` or `reasoning_details` field with `content: null`.
 	// We check the raw response to handle both cases.
 	function hasResponse(res: unknown): boolean {
 		const r = res as {
 			choices: Array<{
-				message: { content?: string | null; reasoning?: string | null };
+				message: {
+					content?: string | null;
+					reasoning?: string | null;
+					reasoning_details?: unknown[];
+				};
 			}>;
 		};
 		const msg = r.choices[0]?.message;
-		return !!(msg?.content || msg?.reasoning);
+		return !!(msg?.content || msg?.reasoning || (msg?.reasoning_details && msg.reasoning_details.length > 0));
 	}
 
+	// Reasoning models need more tokens because they reason before responding
+	const REASONING_MODELS = new Set(['openai/gpt-5', 'openai/gpt-5-mini', 'deepseek/deepseek-r1']);
+
 	for (const model of CURATED_MODELS) {
+		const maxTokens = REASONING_MODELS.has(model.id) ? 1000 : 100;
+
 		describe(model.name, () => {
 			it('handles text completion', async () => {
 				const client = makeClient();
 				const res = await client.chat.completions.create({
 					model: model.id,
 					messages: [{ role: 'user', content: 'Reply with exactly: OK' }],
-					max_tokens: 100
+					max_tokens: maxTokens
 				});
 				expect(hasResponse(res)).toBe(true);
 			}, 60_000);
@@ -74,7 +87,7 @@ describe.skipIf(!apiKey)('OpenRouter model validation (live API)', () => {
 							]
 						}
 					],
-					max_tokens: 100
+					max_tokens: maxTokens
 				});
 				expect(hasResponse(res)).toBe(true);
 			}, 60_000);

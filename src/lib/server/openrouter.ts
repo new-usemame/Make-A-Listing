@@ -36,6 +36,35 @@ export const CURATED_MODELS = [
 		tools: true
 	},
 	{
+		id: 'openai/gpt-5',
+		name: 'GPT-5',
+		tier: 'best',
+		vision: true,
+		tools: true
+	},
+	{
+		id: 'openai/gpt-5-mini',
+		name: 'GPT-5 Mini',
+		tier: 'quality',
+		vision: true,
+		tools: true
+	},
+	{
+		id: 'openai/gpt-4.1',
+		name: 'GPT-4.1',
+		tier: 'quality',
+		vision: true,
+		tools: true
+	},
+	{
+		id: 'openai/gpt-4.1-mini',
+		name: 'GPT-4.1 Mini',
+		tier: 'fast',
+		vision: true,
+		tools: true
+	},
+	{ id: 'openai/gpt-4o-mini', name: 'GPT-4o Mini', tier: 'budget', vision: true, tools: true },
+	{
 		id: 'deepseek/deepseek-r1',
 		name: 'DeepSeek R1',
 		tier: 'quality',
@@ -49,7 +78,6 @@ export const CURATED_MODELS = [
 		vision: true,
 		tools: true
 	},
-	{ id: 'openai/gpt-4o-mini', name: 'GPT-4o Mini', tier: 'budget', vision: true, tools: true },
 	{
 		id: 'google/gemini-2.5-flash',
 		name: 'Gemini 2.5 Flash',
